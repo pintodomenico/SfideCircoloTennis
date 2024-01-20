@@ -7,3 +7,4 @@ posizione,nome,cognome,sfidante,sfidato,infortunato,data_infortunio,non_sfidabil
 6,Luigi,Zaccaria,False,False,False,,False,
 7,Giampiero,Leo,False,False,False,,False,
 8,Antonio,Scialpi,False,False,False,,False,
+9,Domenico,Pinto,,,False,,False,

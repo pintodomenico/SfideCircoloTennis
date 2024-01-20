@@ -1,31 +1,13 @@
 import datetime
-import csv
 
 from giocatore import Giocatore
 from input_output_utilities import *
 
 class CircoloTennis:
-    def __init__(self):
-        self.giocatori = []
+    def __init__(self, giocatori):
+        self.giocatori = giocatori
         self.infortunati = []
 
-    def visualizza_classifica(self):
-        if not self.giocatori:
-            print("Nessun giocatore nella classifica al momento.")
-            return
-
-    # Calcola la lunghezza massima dei nomi dei giocatori
-        max_length = max([len(g.nome + " " + g.cognome) for g in self.giocatori])
-
-    # Stampa l'intestazione della tabella
-        print("Classifica Giocatori:")
-        print("| Posizione |", "Nome".ljust(max_length), "|")
-        print("|-----------|" + "-" * (max_length + 1) + "|")
-
-    # Stampa i giocatori
-        for giocatore in self.giocatori:
-            nome_completo = giocatore.nome + " " + giocatore.cognome
-            print(f"| {giocatore.posizione:<9} | {nome_completo.ljust(max_length)} |")
     def visualizza_sfide_in_corso(self):
         sfide_attive = [g for g in self.giocatori if g.sfidante or g.sfidato]
         if sfide_attive:
@@ -36,6 +18,7 @@ class CircoloTennis:
                     print(f"{giocatore.nome} {giocatore.cognome} (Sfidante) vs {sfidato.nome} {sfidato.cognome} (Sfidato)")
         else:
             print("Non ci sono sfide in corso al momento.")
+
     def visualizza_stato_giocatori(self):
         print("Stato dei giocatori:")
         for giocatore in self.giocatori:
@@ -171,6 +154,9 @@ class CircoloTennis:
                     self.giocatori[posizione_attuale - 1], self.giocatori[posizione_attuale] = giocatore_successivo, giocatore
                     giocatore.posizione, giocatore_successivo.posizione = giocatore_successivo.posizione, giocatore.posizione
                     print(f"{giocatore.nome} {giocatore.cognome} è sceso di una posizione a causa dell'infortunio.")
+
+
+
     def aggiorna_posizione_infortunati(self):
         for giocatore in self.giocatori:
             if giocatore.infortunato:
@@ -195,38 +181,38 @@ class CircoloTennis:
                 giocatore.non_sfidabile = True
                 print(f"{giocatore.nome} {giocatore.cognome} non può essere sfidato per 30 giorni.")
 
-    def salva_classifica(self, filename="classifica.csv"):
-        with open(filename, 'w', newline='') as csvfile:
-            fieldnames = ['posizione', 'nome', 'cognome', 'sfidante', 'sfidato', 'infortunato', 'data_infortunio', 'non_sfidabile', 'ultima_sfida_vinta']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    # def salva_classifica(self, filename="classifica.csv"):
+    #     with open(filename, 'w', newline='') as csvfile:
+    #         fieldnames = ['posizione', 'nome', 'cognome', 'sfidante', 'sfidato', 'infortunato', 'data_infortunio', 'non_sfidabile', 'ultima_sfida_vinta']
+    #         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-            writer.writeheader()
-            for giocatore in self.giocatori:
-                writer.writerow({
-                    'posizione': giocatore.posizione,
-                    'nome': giocatore.nome,
-                    'cognome': giocatore.cognome,
-                    'sfidante': giocatore.sfidante,
-                    'sfidato': giocatore.sfidato,
-                    'infortunato': giocatore.infortunato,
-                    'data_infortunio': giocatore.data_infortunio.strftime('%Y-%m-%d') if giocatore.data_infortunio else '',
-                    'non_sfidabile': giocatore.non_sfidabile,
-                    'ultima_sfida_vinta': giocatore.ultima_sfida_vinta.strftime('%Y-%m-%d') if giocatore.ultima_sfida_vinta else ''
-                })
+    #         writer.writeheader()
+    #         for giocatore in self.giocatori:
+    #             writer.writerow({
+    #                 'posizione': giocatore.posizione,
+    #                 'nome': giocatore.nome,
+    #                 'cognome': giocatore.cognome,
+    #                 'sfidante': giocatore.sfidante,
+    #                 'sfidato': giocatore.sfidato,
+    #                 'infortunato': giocatore.infortunato,
+    #                 'data_infortunio': giocatore.data_infortunio.strftime('%Y-%m-%d') if giocatore.data_infortunio else '',
+    #                 'non_sfidabile': giocatore.non_sfidabile,
+    #                 'ultima_sfida_vinta': giocatore.ultima_sfida_vinta.strftime('%Y-%m-%d') if giocatore.ultima_sfida_vinta else ''
+    #             })
 
-    def carica_classifica(self, filename="classifica.csv"):
-        try:
-            with open(filename, 'r') as csvfile:
-                reader = csv.DictReader(csvfile)
-                self.giocatori = []
-                for row in reader:
-                    giocatore = Giocatore(int(row['posizione']), row['nome'], row['cognome'])
-                    giocatore.sfidante = row['sfidante'] == 'True'
-                    giocatore.sfidato = row['sfidato'] == 'True'
-                    giocatore.infortunato = row['infortunato'] == 'True'
-                    giocatore.data_infortunio = datetime.datetime.strptime(row['data_infortunio'], '%Y-%m-%d').date() if row['data_infortunio'] else None
-                    giocatore.non_sfidabile = row['non_sfidabile'] == 'True'
-                    giocatore.ultima_sfida_vinta = datetime.datetime.strptime(row['ultima_sfida_vinta'], '%Y-%m-%d').date() if row['ultima_sfida_vinta'] else None
-                    self.giocatori.append(giocatore)
-        except FileNotFoundError:
-            pass
+    # def carica_classifica(self, filename="classifica.csv"):
+    #     try:
+    #         with open(filename, 'r') as csvfile:
+    #             reader = csv.DictReader(csvfile)
+    #             self.giocatori = []
+    #             for row in reader:
+    #                 giocatore = Giocatore(int(row['posizione']), row['nome'], row['cognome'])
+    #                 giocatore.sfidante = row['sfidante'] == 'True'
+    #                 giocatore.sfidato = row['sfidato'] == 'True'
+    #                 giocatore.infortunato = row['infortunato'] == 'True'
+    #                 giocatore.data_infortunio = datetime.datetime.strptime(row['data_infortunio'], '%Y-%m-%d').date() if row['data_infortunio'] else None
+    #                 giocatore.non_sfidabile = row['non_sfidabile'] == 'True'
+    #                 giocatore.ultima_sfida_vinta = datetime.datetime.strptime(row['ultima_sfida_vinta'], '%Y-%m-%d').date() if row['ultima_sfida_vinta'] else None
+    #                 self.giocatori.append(giocatore)
+    #     except FileNotFoundError:
+    #         pass
