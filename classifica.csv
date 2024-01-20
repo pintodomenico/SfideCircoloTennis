@@ -1,0 +1,9 @@
+posizione,nome,cognome,sfidante,sfidato,infortunato,data_infortunio,non_sfidabile,ultima_sfida_vinta
+1,Quirino,Semeraro,False,False,False,,False,
+2,Francesco,Lanzilotta,False,False,False,,False,
+3,Francesco,Zizzi,False,False,False,,False,
+4,Domenico,Ferrante,False,False,False,,False,
+5,Antonio,Urso,False,False,False,,False,
+6,Luigi,Zaccaria,False,False,False,,False,
+7,Giampiero,Leo,False,False,False,,False,
+8,Antonio,Scialpi,False,False,False,,False,
