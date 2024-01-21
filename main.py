@@ -1,5 +1,6 @@
 from circolo_tennis import CircoloTennis
 from input_output_utilities import *
+from data_manager import *
 
 def main():
     print("Versione del programma: 1.22 funzionanate")
